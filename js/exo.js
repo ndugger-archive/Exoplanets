@@ -1,6 +1,8 @@
 window.exo = {
 	
 	collection: [],
+	ruler: [],
+	maxDistance: 0,
 	
 	init: function(url) {
 		var self = this;
@@ -31,6 +33,8 @@ window.exo = {
 		};
 		xhr.open("GET", url, true);
 		xhr.send();*/
+
+		this.parsecs(space);
 		
 		window.addEventListener("wheel", function(e) {
 			var i = 0, count = self.collection.length;
@@ -41,16 +45,34 @@ window.exo = {
 					if (x <= 0) {
 						planet.hide();
 					};
-					planet.offsetX(planet.offsetX() - 50);
+					planet.offsetX(planet.offsetX() / 1.25);
 				} else if (e.deltaY <= -1) {
 					if (x >= 0) {
 						planet.show();
 					};
-					planet.offsetX(planet.offsetX() + 50);
+					planet.offsetX(planet.offsetX() * 1.25);
 				};
-				space.batchDraw();
 				i++;
 			};
+			i = 0, count = self.ruler.length;
+			while (i < count) {
+				var circle = self.ruler[i];
+				var r = circle.radius();
+				if (e.deltaY >= 1) {
+					if (r <= 2) {
+						circle.hide();
+					};
+					circle.radius(circle.radius() / 1.25);
+				} else if (e.deltaY <= -1) {
+					if (r >= 2) {
+						circle.show();
+					};
+					circle.radius(circle.radius() * 1.25);
+				};
+				i++;
+			};
+
+			space.batchDraw();
 		});
 		
 		var planetInfo = document.getElementById("planetInfo");
@@ -64,7 +86,7 @@ window.exo = {
 		var planet = JSON.parse(planet.getId());
 		for (var prop in planet) {
 			var capProp = prop[0].toUpperCase() + prop.slice(1);
-			if (document.getElementById("planet" + capProp)) {
+			if (document.getElementById("planet" + capProp) && planet[prop]) {
 				document.getElementById("planet" + capProp).textContent = planet[prop];
 			};
 		};
@@ -76,14 +98,13 @@ window.exo = {
 	planets: function(space, planets) {
 		var self = this;
 		
-		this.parsecs(space);
-		
 		var planetCollection = new Kinetic.Layer();
 		
 		var i = 0, count = planets.length, _ = self.collection;
 		while (i < count) {
 			var planet = planets[i];
 			if (planet.star.distance) {
+				self.maxDistance = planet.star.distance > self.maxDistance ? planet.star.distance : self.maxDistance;
 				var circle = new Kinetic.Circle({
 					x: window.innerWidth/2,
 					y: window.innerHeight/2,
@@ -104,7 +125,7 @@ window.exo = {
 						radius: (planet.radius * 69911000).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " m", // radius * jupiter's radius
 						mass: planet.mass,
 						gravity: planet.gravity,
-						year: planet.period + " days",
+						year: planet.period ? planet.period + " days" : null,
 						distance: planet.star.distance,
 						habitable: (function() {
 							if (planet.habitable) {
@@ -173,11 +194,12 @@ window.exo = {
 	},
 	
 	parsecs: function(space) {
+		var self = this;
 		var parsecRuler = new Kinetic.Layer();
 		
-		var i = 2, count = window.innerWidth, parsecs = [];
+		var i = 2, count = self.maxDistance, parsecs = [];
 		while (i < count) {
-			parsecRuler.add(new Kinetic.Circle({
+			var parsec = new Kinetic.Circle({
 				x: window.innerWidth / 2,
 				y: window.innerHeight / 2,
 				radius: i,
@@ -188,11 +210,14 @@ window.exo = {
 					i, 0,
 					i, window.innerHeight
 				]
-			}));
+			});
+			parsecRuler.add(parsec);
+			self.ruler.push(parsec);
 			i += 50;
 		}
 		
 		space.add(parsecRuler);
+		parsecRuler.moveToBottom();
 		
 		parsecs.forEach(function(parsec) {
 			parsec.cache();
