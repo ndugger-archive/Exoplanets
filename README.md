@@ -1,7 +1,7 @@
 Exoplanets
 ==========
 
-Using the API from http://exoapi.com/
+Using the API from http://exoapi.com/ (currently broken, so using a temporary file with a dump from what I could extract)
 
 This visualization does not accurately depict each planet's accurate location in the nigh sky, relative to us. It does, however, depict their distance outward from our sun, their temperature (hot, warm, or cold), and their aproximated radius.
 
