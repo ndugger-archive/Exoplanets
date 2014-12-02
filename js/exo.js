@@ -3,8 +3,9 @@ window.exo = {
 	collection: [],
 	ruler: [],
 	maxDistance: 0,
+	zoom: 0,
 	
-	init: function(url) {
+	init: function(url, animate) {
 		var self = this;
 		
 		var exoplanets = document.createElement("div");
@@ -46,11 +47,13 @@ window.exo = {
 						planet.hide();
 					};
 					planet.offsetX(planet.offsetX() / 1.25);
+					//planet.radius(planet.radius() / 1.25);
 				} else if (e.deltaY <= -1) {
 					if (x >= 0) {
 						planet.show();
 					};
 					planet.offsetX(planet.offsetX() * 1.25);
+					//planet.radius(planet.radius() * 1.25);
 				};
 				i++;
 			};
@@ -71,7 +74,6 @@ window.exo = {
 				};
 				i++;
 			};
-
 			space.batchDraw();
 		});
 		
@@ -79,6 +81,19 @@ window.exo = {
 		planetInfo.getElementsByClassName("close")[0].addEventListener("click", function() {
 			planetInfo.style.display = "none";
 		});
+		
+		if (animate) {
+			var _ = self.collection;
+			var rotate = new Kinetic.Animation(function(f) {
+				i = 0, count = _.length;
+				while (i < count) {
+					var planet = _[i];
+					planet.rotate(f.timeDiff * (360 / (planet.offsetX()/5)) / 1000)
+					i++;
+				};
+			}, space.find("#planetCollection"));
+			rotate.start();
+		}
 	},
 	
 	getInfo: function(planet) {
@@ -99,6 +114,7 @@ window.exo = {
 		var self = this;
 		
 		var planetCollection = new Kinetic.Layer();
+		planetCollection.setId("planetCollection");
 		
 		var i = 0, count = planets.length, _ = self.collection;
 		while (i < count) {
@@ -122,7 +138,7 @@ window.exo = {
 						type: planet.mass_class,
 						compo: planet.composition_class,
 						atmo: planet.atmosphere_class,
-						radius: (planet.radius * 69911000).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " m", // radius * jupiter's radius
+						radius: (planet.radius * 69911000).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " m",
 						mass: planet.mass,
 						gravity: planet.gravity,
 						year: planet.period ? planet.period + " days" : null,
@@ -161,15 +177,6 @@ window.exo = {
 			i++;
 		};
 		space.add(planetCollection);
-		/*var rotate = new Kinetic.Animation(function(f) {
-			i = 0, count = _.length;
-			while (i < count) {
-				var planet = _[i];
-				planet.rotate(f.timeDiff * (360 / (planet.offsetX()/5)) / 1000)
-				i++;
-			};
-		}, planetCollection);
-		rotate.start();*/
 	},
 	
 	zone: function(zone) {
@@ -213,7 +220,15 @@ window.exo = {
 			});
 			parsecRuler.add(parsec);
 			self.ruler.push(parsec);
-			i += 50;
+			if (i <= 500) {
+				i += 50;
+			} else if (i <= 1500) {
+				i += 100;
+			} else if (i <= 3000) {
+				i += 200;
+			} else {
+				i += 400;
+			};
 		}
 		
 		space.add(parsecRuler);
