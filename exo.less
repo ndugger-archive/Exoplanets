@@ -1,0 +1,55 @@
+body {
+	margin: 0;
+	padding: 0;
+	background: #100b29;
+	overflow: hidden;
+	font-family: Arial;
+	cursor: move;
+	
+	h1 {
+		background: rgba(0, 0, 0, 0.5);
+		color: #FFF;
+		font-size: 24px;
+		font-weight: normal;
+		margin: 0;
+		padding: 10px 20px;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
+
+#planetInfo {
+	width: 480px;
+	height: 480px;
+	background: #FFF;
+	position: absolute;
+	top: 50%;
+	margin-top: -240px;
+	left: 50%;
+	margin-left: -240px;
+	display:none;
+	z-index:1;
+	
+	.inner {
+		padding: 20px;
+	}
+	
+	.close {
+		cursor: pointer;
+		position: absolute;
+		top: -32px;
+		right: 0;
+		height: 32px;
+		background: #FFF;
+		padding: 0 10px;
+		line-height: 32px;
+	}
+}
+
+#planetName {
+	margin: 0;
+	font-size: 20px;
+	padding: 0;
+	font-weight: bold;
+}

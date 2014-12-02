@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.1.0.min.js"></script>
+		<script src="js/data.js"></script>
+		<link rel="stylesheet" href="exo.css"/>
+	</head>
+	<body>
+		<h1>Click on a planet to "discover" it</h1>
+		<div id="planetInfo">
+			<div class="close">Close</div>
+			<div class="inner">
+				<div id="planetName">HD 108874 c</div>
+				<span id="planetZone"></span> <span id="planetType"></span> Planet
+				<table>
+					<tbody>
+						<tr>
+							<td>Aprox. Distance</td>
+							<td id="planetDistance"></td>
+						</tr>
+						<tr>
+							<td>Aprox. Radius</td>
+							<td id="planetRadius"></td>
+						</tr>
+						<tr>
+							<td>Orbital Year</td>
+							<td id="planetYear"></td>
+						</tr>
+						<tr>
+							<td>Gravity</td>
+							<td id="planetGravity"></td>
+						</tr>
+						<tr>
+							<td>Habitable</td>
+							<td id="planetHabitable"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<script src="js/exo.js"></script>
+		<script>
+			exo.init("http://exoapi.com/api/planets/all");
+		</script>
+	</body>
+</html>
