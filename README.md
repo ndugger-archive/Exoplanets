@@ -3,11 +3,11 @@ Exoplanets
 
 Using the API from http://exoapi.com/ (currently broken, so using a temporary file with a dump from what I could extract)
 
-Demo of the current progress: http://nickdugger.com/exoplanets/ (the "orbit" animation was just added for fun. it will not be in the final version)
+Demo of the current progress: http://nickdugger.com/exoplanets/
 
-This visualization does not accurately depict each planet's accurate location in the nigh sky, relative to us. It does, however, depict their distance outward from our sun, their temperature (hot, warm, or cold), and their aproximated radius.
+This visualization does not accurately depict each planet's location in the sky, relative to us. It does, however, depict their distance outward from our sun, their temperature (hot, warm, or cold), and their aproximated radius.
 
-Each dashed line represents 10 parsecs upon the initial page zoom. Using the scroll wheel on your mouse will change it, though the zoom value will change soon.
+Each dashed line represents __ parsecs upon the initial page zoom. Using the scroll wheel on your mouse will change it, though the zoom value will change soon.
 
 Clicking on a planet will bring up a box with their information. Style/UI will change soon as well. It's just a rough cut at the moment.
 
