@@ -63,7 +63,7 @@ window.exo = {
 				var r = circle.radius();
 				if (e.deltaY >= 1) {
 					if (r <= 2) {
-						circle.hide();
+						//circle.hide();
 					};
 					circle.radius(circle.radius() / 1.25);
 				} else if (e.deltaY <= -1) {
@@ -83,17 +83,21 @@ window.exo = {
 		});
 		
 		if (animate) {
-			var _ = self.collection;
-			var rotate = new Kinetic.Animation(function(f) {
-				i = 0, count = _.length;
-				while (i < count) {
-					var planet = _[i];
-					planet.rotate(f.timeDiff * (360 / (planet.offsetX()/5)) / 1000)
-					i++;
-				};
-			}, space.find("#planetCollection"));
-			rotate.start();
+			this.animate(space);
 		}
+	},
+	
+	animate: function(space) {
+		var _ = self.collection;
+		var rotate = new Kinetic.Animation(function(f) {
+			i = 0, count = _.length;
+			while (i < count) {
+				var planet = _[i];
+				planet.rotate(f.timeDiff * (360 / (planet.offsetX()/5)) / 1000)
+				i++;
+			};
+		}, space.find("#planetCollection"));
+		rotate.start();
 	},
 	
 	getInfo: function(planet) {
@@ -125,8 +129,8 @@ window.exo = {
 					x: window.innerWidth/2,
 					y: window.innerHeight/2,
 					radius: planet.radius/1.5 > 1 ? planet.radius/1.5 : 1,
-					fill: this.zone(planet.zone_class),
-					stroke: /*this.habitable(planet.habitable, planet.hab_moon) ? "white" :*/ "transparent",
+					fill: this.habitable(planet.habitable, planet.hab_moon) ? "rgba(97, 253, 0, 0.66)" : this.zone(planet.zone_class),
+					stroke: "transparent",
 					offset: {
 						x: planet.star.distance * 5,
 						y: 2
@@ -182,11 +186,11 @@ window.exo = {
 	zone: function(zone) {
 		switch(zone) {
 			case "Hot":
-				return "rgba(255, 25, 0, 0.66)";
+				return "rgba(255, 0, 0, 0.66)";
 			case "Warm":
-				return "rgba(153, 212, 19, 0.66)";
+				return "rgba(255, 206, 0, 0.66)";
 			case "Cold":
-				return "rgba(30, 142, 255, 0.66)";
+				return "rgba(27, 123, 255, 0.66)";
 			default:
 				return "rgba(150, 150, 150, 0.66)";
 		};
@@ -204,8 +208,8 @@ window.exo = {
 		var self = this;
 		var parsecRuler = new Kinetic.Layer();
 		
-		var i = 2, count = self.maxDistance, parsecs = [];
-		while (i < count) {
+		var i = 2, count = self.maxDistance * 5, parsecs = [];
+		while (i < count + 15000) {
 			var parsec = new Kinetic.Circle({
 				x: window.innerWidth / 2,
 				y: window.innerHeight / 2,
@@ -222,14 +226,22 @@ window.exo = {
 			self.ruler.push(parsec);
 			if (i <= 500) {
 				i += 50;
-			} else if (i <= 1500) {
+			} else if (i <= 1000) {
 				i += 100;
-			} else if (i <= 3000) {
-				i += 200;
+			} else if (i <= 2000) {
+				i += 250;
+			} else if (i <= 4000) {
+				i += 500;
+			} else if (i <= 8000) {
+				i += 1000;
+			} else if (i <= 16000) {
+				i += 3000;
+			} else if (i <= 32000) {
+				i += 7500;
 			} else {
-				i += 400;
+				i += 15000;
 			};
-		}
+		};
 		
 		space.add(parsecRuler);
 		parsecRuler.moveToBottom();
