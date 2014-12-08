@@ -3,7 +3,7 @@
 
 Using the API from http://exoapi.com/
 
-Demo of the current progress: http://nickdugger.com/exoplanets/
+Demo of the current progress: http://nickdugger.com/exoplanets/ (takes a couple of seconds to load)
 
 This visualization does not accurately depict each planet's location in the sky, relative to us. It does, however, depict their distance outward from our sun, their temperature (hot, warm, or cold), and their aproximated radius.
 
