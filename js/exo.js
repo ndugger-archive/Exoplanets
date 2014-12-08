@@ -19,23 +19,18 @@ window.exo = {
 		});
 		
 		// TEMP UNTIL API IS FIXED
-		self.planets(space, window.tempdata.response.results);
+		//self.planets(space, window.tempdata.response.results);
 		
-		/*var xhr = new XMLHttpRequest(); 
+		var xhr = new XMLHttpRequest();
 		xhr.onload = function() {
-			self.planets(new Kinetic.Stage({
-				width: window.innerWidth,
-				height: window.innerHeight,
-				container: document.body
-			}), JSON.parse(xhr.responseText).response.results);	
+			self.planets(space, JSON.parse(xhr.responseText).response.results);
+			self.parsecs(space);
 		};
 		xhr.onerror = function() {
-			console.log("error");
+			console.error("Error");
 		};
 		xhr.open("GET", url, true);
-		xhr.send();*/
-
-		this.parsecs(space);
+		xhr.send();
 		
 		window.addEventListener("wheel", function(e) {
 			var i = 0, count = self.collection.length;
@@ -116,6 +111,8 @@ window.exo = {
 	
 	planets: function(space, planets) {
 		var self = this;
+		
+		console.log(planets[0].radius);
 		
 		var planetCollection = new Kinetic.Layer();
 		planetCollection.setId("planetCollection");
